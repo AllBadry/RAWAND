@@ -659,6 +659,13 @@ footer {
     box-shadow: 0 15px 35px rgba(0,0,0,0.15);
     transition: transform 0.4s;
 }
+
+
+.map-wrapper iframe {
+    width: 100% !important;
+    max-width: 100%;
+}
+
 .map-wrapper:hover {
     transform: scale(1.01);
 }
