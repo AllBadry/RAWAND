@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة أدوات راواند للتركيز العالي | RAWAND Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* التثبيت الجمالي العام وثيم راواند الملكي */
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+
+        :root {
+            --primary-burgundy: #4a051c;
+            --dark-burgundy: #150006;
+            --gold-bright: #f3cf7a;
+            --gold-dark: #b89341;
+            --gold-glow: rgba(243, 207, 122, 0.3);
+            --neon-green: #25d366;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(243, 207, 122, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--dark-burgundy);
+            color: #fff;
+            min-height: 100vh;
+            padding-bottom: 60px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%; left: -20%; width: 150vw; height: 150vh;
+            background: radial-gradient(circle, rgba(74, 5, 28, 0.4) 0%, transparent 60%);
+            z-index: -1;
+            animation: backgroundPulse 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes backgroundPulse {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-5vw, -5vh) scale(1.1); }
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, rgba(21, 0, 6, 0.9), rgba(46, 1, 16, 0.9));
+            padding: 35px 8%;
+            border-bottom: 2px solid var(--gold-dark);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-header h1 {
+            color: var(--gold-bright);
+            font-size: 34px;
+            font-weight: 900;
+            text-shadow: 0 0 20px var(--gold-glow);
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-header .back-link {
+            color: #b5b5b5;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-header .back-link:hover {
+            color: var(--dark-burgundy);
+            background: var(--gold-bright);
+            border-color: var(--gold-bright);
+            box-shadow: 0 0 15px var(--gold-bright);
+            transform: translateY(-2px);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            padding: 50px 8%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dash-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 35px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dash-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(243, 207, 122, 0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .dash-card:hover::before { left: 100%; transition: 0.8s; }
+        .dash-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(243, 207, 122, 0.4);
+            box-shadow: 0 20px 45px rgba(74, 5, 28, 0.3), 0 0 15px rgba(243, 207, 122, 0.1);
+        }
+
+        .dash-card h2 {
+            color: var(--gold-bright);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(243, 207, 122, 0.1);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dash-card h2 i { color: var(--gold-dark); }
+
+        /* عناوين المجموعات الصوتية الفرعية */
+        .audio-group-title {
+            font-size: 16px;
+            color: var(--gold-bright);
+            margin: 20px 0 10px;
+            text-align: right;
+            font-weight: 600;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-widget {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(243, 207, 122, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+        }
+
+        .timer-display {
+            font-size: 72px;
+            font-weight: 900;
+            color: var(--gold-bright);
+            font-family: 'Courier New', monospace, sans-serif;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(243, 207, 122, 0.6);
+            animation: clockPulse 2s infinite alternate;
+        }
+
+        @keyframes clockPulse {
+            0% { text-shadow: 0 0 15px rgba(243, 207, 122, 0.4); }
+            100% { text-shadow: 0 0 30px rgba(243, 207, 122, 0.8); }
+        }
+
+        .timer-controls { display: flex; justify-content: center; gap: 20px; }
+        .timer-controls button, .btn-quote, .btn-add-task {
+            padding: 14px 28px;
+            border: none; border-radius: 15px; font-weight: 700; font-size: 16px; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        #btn-timer-start { background: linear-gradient(135deg, var(--gold-bright), var(--gold-dark)); color: var(--dark-burgundy); }
+        #btn-timer-start:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 8px 25px rgba(243, 207, 122, 0.5); }
+        #btn-timer-reset { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        #btn-timer-reset:hover { background: rgba(231, 76, 60, 0.15); border-color: #e74c3c; color: #e74c3c; transform: scale(1.05) translateY(-3px); box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3); }
+        .timer-controls button:active { transform: scale(0.98); }
+
+        /* شبكة الأصوات الثلاثية المحدثة لـ 3 أزرار في السطر */
+        .audio-controls-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 15px; 
+            margin-bottom: 25px;
+        }
+
+        .ambient-btn {
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(243, 207, 122, 0.2); padding: 15px 10px;
+            border-radius: 16px; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative;
+        }
+        .ambient-btn i { font-size: 24px; color: var(--gold-bright); transition: transform 0.3s; }
+        .ambient-btn:hover { background: rgba(243, 207, 122, 0.06); border-color: var(--gold-bright); transform: translateY(-4px); }
+        .ambient-btn:hover i { transform: scale(1.15); }
+        .ambient-btn.playing { background: linear-gradient(135deg, rgba(74, 5, 28, 0.6), rgba(30, 0, 9, 0.8)); border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 20px rgba(37, 211, 102, 0.3), inset 0 0 10px rgba(37, 211, 102, 0.2); }
+        .ambient-btn.playing i { color: var(--neon-green); animation: pulseIcon 1.5s infinite alternate; }
+
+        @keyframes pulseIcon {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px var(--neon-green)); }
+            100% { transform: scale(1.15); filter: drop-shadow(0 0 8px var(--neon-green)); }
+        }
+
+        .equalizer { display: none; justify-content: center; align-items: flex-end; gap: 3px; height: 18px; margin-top: 3px; }
+        .ambient-btn.playing .equalizer { display: flex; }
+        .eq-bar { width: 3px; height: 4px; background-color: var(--neon-green); animation: bounceBar 0.5s infinite alternate ease-in-out; }
+        .eq-bar:nth-child(2) { animation-delay: 0.15s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.3s; }
+        .eq-bar:nth-child(4) { animation-delay: 0.05s; }
+        @keyframes bounceBar { 0% { height: 3px; } 100% { height: 18px; } }
+
+        .todo-input-group { display: flex; gap: 12px; margin-bottom: 25px; }
+        .todo-input-group input { flex: 1; padding: 15px; border: 1px solid rgba(243, 207, 122, 0.2); border-radius: 14px; background: rgba(0,0,0,0.4); color: #fff; outline: none; font-size: 16px; transition: all 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); }
+        .todo-input-group input:focus { border-color: var(--gold-bright); box-shadow: 0 0 10px rgba(243, 207, 122, 0.2), inset 0 2px 5px rgba(0,0,0,0.3); }
+        .btn-add-task { background: linear-gradient(135deg, var(--gold-bright), var(--gold-dark)); color: var(--dark-burgundy); }
+        .btn-add-task:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(243, 207, 122, 0.4); }
+
+        .task-list { list-style: none; display: flex; flex-direction: column; gap: 14px; max-height: 320px; overflow-y: auto; padding-left: 5px; }
+        .task-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 15px 20px; border-radius: 14px; border-right: 5px solid var(--gold-dark); border-left: 1px solid rgba(255,255,255,0.05); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); animation: fadeInTask 0.4s ease; }
+        @keyframes fadeInTask { 0% { opacity: 0; transform: translateX(20px); } 100% { opacity: 1; transform: translateX(0); } }
+        .task-item:hover { background: rgba(255,255,255,0.05); transform: scale(1.01); }
+        .task-item.completed { border-right-color: var(--neon-green); background: rgba(37, 211, 102, 0.03); opacity: 0.6; }
+        .task-item.completed span { text-decoration: line-through; color: #aaa; }
+        .task-actions { display: flex; gap: 12px; }
+        .task-actions button { background: none; border: none; cursor: pointer; font-size: 18px; transition: transform 0.2s; }
+        .btn-check { color: var(--neon-green); } .btn-delete { color: #e74c3c; }
+        .task-actions button:hover { transform: scale(1.25); }
+
+        .motivation-box { text-align: center; padding: 25px 15px; background: rgba(0,0,0,0.2); border-radius: 18px; border: 1px solid rgba(255,255,255,0.03); }
+        .quote-text { font-size: 19px; font-style: italic; color: #f0f0f0; min-height: 70px; line-height: 1.8; margin-bottom: 15px; transition: all 0.3s ease; }
+        
+        .quote-meta-details { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; font-size: 14px; transition: all 0.3s ease; flex-wrap: wrap; }
+        .quote-author { color: var(--gold-bright); font-weight: 600; background: rgba(243, 207, 122, 0.05); padding: 2px 10px; border-radius: 10px; border: 1px solid rgba(243, 207, 122, 0.1); }
+        .quote-source { color: #b5b5b5; font-style: normal; background: rgba(255, 255, 255, 0.02); padding: 2px 10px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+
+        .btn-quote { background: transparent; border: 2px solid var(--gold-bright); color: var(--gold-bright); }
+        .btn-quote:hover { background: var(--gold-bright); color: var(--dark-burgundy); box-shadow: 0 5px 20px rgba(243, 207, 122, 0.4); transform: translateY(-2px); }
+
+        @media (max-width: 992px) {
+            .dashboard-grid { grid-template-columns: 1fr; gap: 30px; padding: 30px 4%; }
+            .dashboard-header h1 { font-size: 28px; }
+            .timer-display { font-size: 56px; }
+            .audio-controls-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <header class="dashboard-header">
+        <h1>مساحة راواند الرقمية للتميز الدراسي 🎓</h1>
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> العودة للصفحة الرئيسية للموقع</a>
+    </header>
+
+    <div class="dashboard-grid">
+        
+        <div class="dash-card">
+            <h2><i class="fas fa-brain"></i> 1. مؤقت التركيز والأصوات عازلة الضوضاء</h2>
+            <p style="font-size: 14px; color: #ccc; margin-bottom: 20px;">اضبط مؤقت بومودورو وشغل خط الصوت المناسب لك لبناء حصن تركيزك الخاص.</p>
+            
+            <div class="timer-widget">
+                <div class="timer-display" id="timer-display">25:00</div>
+                <div class="timer-controls">
+                    <button id="btn-timer-start" onclick="toggleTimer()"><i class="fas fa-play"></i> ابدأ التركيز</button>
+                    <button id="btn-timer-reset" onclick="resetTimer()"><i class="fas fa-redo"></i> إعادة تعيين</button>
+                </div>
+            </div>
+
+            <div class="audio-group-title"><i class="fas fa-cloud-showers-heavy"></i> خيارات المطر عازل الصوت:</div>
+            <div class="audio-controls-grid">
+                <button class="ambient-btn" id="btn-sound-rain1" onclick="toggleAmbientSound('rain1', this)">
+                    <i class="fas fa-cloud-rain"></i>
+                    <span>مطر خفيف</span>
+                    <div class="equalizer">
+                        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                    </div>
+                </button>
+                <button class="ambient-btn" id="btn-sound-rain2" onclick="toggleAmbientSound('rain2', this)">
+                    <i class="fas fa-umbrella"></i>
+                    <span>مطر لو-فاي</span>
+                    <div class="equalizer">
+                        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                    </div>
+                </button>
+                <button class="ambient-btn" id="btn-sound-rain3" onclick="toggleAmbientSound('rain3', this)">
+                    <i class="fas fa-cloud-showers-heavy"></i>
+                    <span>مطر استرخاء</span>
+                    <div class="equalizer">
+                        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                    </div>
+                </button>
+            </div>
+
+            <div class="audio-group-title"><i class="fas fa-mug-hot"></i> خيارات أجواء المقاهي:</div>
+            <div class="audio-controls-grid">
+                <button class="ambient-btn" id="btn-sound-cafe1" onclick="toggleAmbientSound('cafe1', this)">
+                    <i class="fas fa-comments"></i>
+                    <span>همسات كافيه</span>
+                    <div class="equalizer">
+                        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                    </div>
+                </button>
+                <button class="ambient-btn" id="btn-sound-cafe2" onclick="toggleAmbientSound('cafe2', this)">
+                    <i class="fas fa-store"></i>
+                    <span>مقهى حيوي</span>
+                    <div class="equalizer">
+                        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                    </div>
+                </button>
+                <button class="ambient-btn" id="btn-sound-cafe3" onclick="toggleAmbientSound('cafe3', this)">
+                    <i class="fas fa-coffee"></i>
+                    <span>أصوات المقهى</span>
+                    <div class="equalizer">
+                        <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+                    </div>
+                </button>
+            </div>
+
+            <audio id="audio-rain1" loop src="audio/dragon-studio-gentle-rain-07-437321.mp3"></audio>
+            <audio id="audio-rain2" loop src="audio/dragon-studio-lo-fi-rain-sounds-444804.mp3"></audio>
+            <audio id="audio-rain3" loop src="audio/dragon-studio-relaxing-rain-444802.mp3"></audio>
+            
+            <audio id="audio-cafe1" loop src="audio/freesound_community-people-talking-at-cafe-ambience-6159.mp3"></audio>
+            <audio id="audio-cafe2" loop src="audio/freesound_community-restaurant-sounds-sunny-point-cafe-25092.mp3"></audio>
+            <audio id="audio-cafe3" loop src="audio/freesound_community-voices-in-cafe-68787.mp3"></audio>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 40px;">
+            
+            <div class="dash-card">
+                <h2><i class="fas fa-check-square"></i> 2. قائمة إنجازاتي لليوم</h2>
+                <div class="todo-input-group">
+                    <input type="text" id="task-input" placeholder="اكتب مهمتك القادمة (مثلاً: حل شيت الرياضيات)...">
+                    <button class="btn-add-task" onclick="addTask()"><i class="fas fa-plus"></i> إضافة</button>
+                </div>
+                <ul class="task-list" id="task-list-container">
+                </ul>
+            </div>
+
+            <div class="dash-card">
+                <h2><i class="fas fa-bolt"></i> 3. جرعة تفاؤل وتحفيز</h2>
+                <div class="motivation-box">
+                    <p class="quote-text" id="quote-display">جاري تحميل الإلهام...</p>
+                    
+                    <div class="quote-meta-details">
+                        <span id="quote-author" class="quote-author"></span>
+                        <span id="quote-source" class="quote-source"></span>
+                    </div>
+
+                    <button class="btn-quote" onclick="generateQuote()"><i class="fas fa-sync-alt"></i> عبارة تحفيزية أخرى</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ================= [ 1. سكربت البومودورو والتركيز ] =================
+        let timer; let isRunning = false; let timeLeft = 25 * 60;
+        function updateDisplay() {
+            const min = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const sec = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').innerText = `${min}:${sec}`;
+        }
+        function toggleTimer() {
+            const btn = document.getElementById('btn-timer-start');
+            if (isRunning) { 
+                clearInterval(timer); 
+                btn.innerHTML = '<i class="fas fa-play"></i> استئناف الجلسة'; 
+                isRunning = false; 
+            } else {
+                isRunning = true; 
+                btn.innerHTML = '<i class="fas fa-pause"></i> إيقاف مؤقت';
+                timer = setInterval(() => { 
+                    if (timeLeft > 0) { 
+                        timeLeft--; 
+                        updateDisplay(); 
+                    } else { 
+                        clearInterval(timer); 
+                        alert("عمل مذهل حقاً! انتهت الجلسة بنجاح، خذ قسطاً من الراحة الآن لتجديد طاقتك."); 
+                        resetTimer(); 
+                    } 
+                }, 1000);
+            }
+        }
+        function resetTimer() { 
+            clearInterval(timer); 
+            isRunning = false; 
+            timeLeft = 25 * 60; 
+            updateDisplay(); 
+            document.getElementById('btn-timer-start').innerHTML = '<i class="fas fa-play"></i> ابدأ التركيز'; 
+        }
+        
+        // سكربت تشغيل تيار الأصوات التفاعلية الستة ومنع التداخل
+        function toggleAmbientSound(id, btn) {
+            const audio = document.getElementById(`audio-${id}`);
+            
+            // إيقاف أي صوت آخر مشتعل فوراً لعدم التداخل
+            document.querySelectorAll('audio').forEach(a => { 
+                if(a !== audio) { a.pause(); a.currentTime = 0; } 
+            });
+            document.querySelectorAll('.ambient-btn').forEach(b => { 
+                if(b !== btn) b.classList.remove('playing'); 
+            });
+            
+            // تشغيل أو إيقاف الصوت المحدد
+            if (audio.paused) { 
+                audio.play().catch(err => alert("يرجى التأكد من تشغيل الموقع عبر Live Server لسماع تيار الصوت الفوري"));
+                btn.classList.add('playing'); 
+            } else { 
+                audio.pause(); 
+                btn.classList.remove('playing'); 
+            }
+        }
+
+        // ================= [ 2. سكربت قائمة المهام ] =================
+        let tasks = JSON.parse(localStorage.getItem('rawand_tasks')) || [];
+        function saveAndRenderTasks() {
+            localStorage.setItem('rawand_tasks', JSON.stringify(tasks));
+            const container = document.getElementById('task-list-container');
+            container.innerHTML = '';
+            if(tasks.length === 0) { 
+                container.innerHTML = '<p style="color:#888; text-align:center; font-size:14px; margin-top:20px;">لا يوجد مهام في خطتك لليوم، ابدأ بإضافة أول مهمة!</p>'; 
+                return; 
+            }
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <span>${task.text}</span>
+                    <div class="task-actions">
+                        <button class="btn-check" onclick="toggleTask(${index})"><i class="fas ${task.completed ? 'fa-undo' : 'fa-check'}"></i></button>
+                        <button class="btn-delete" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                container.appendChild(li);
+            });
+        }
+        function addTask() {
+            const input = document.getElementById('task-input');
+            const text = input.value.trim();
+            if(text === '') return;
+            tasks.push({ text: text, completed: false });
+            input.value = ''; 
+            saveAndRenderTasks();
+        }
+        function toggleTask(index) { tasks[index].completed = !tasks[index].completed; saveAndRenderTasks(); }
+        function deleteTask(index) { tasks.splice(index, 1); saveAndRenderTasks(); }
+        saveAndRenderTasks();
+
+        // ================= [ 3. سكربت جلب الكيانات من quotes.json ] =================
+        let allQuotes = [];
+
+        fetch('quotes.json')
+            .then(response => {
+                if (!response.ok) throw new Error("لم يتم العثور على ملف quotes.json");
+                return response.json();
+            })
+            .then(data => {
+                allQuotes = data;
+                generateQuote();
+            })
+            .catch(error => {
+                console.error('خطأ في الـ Fetch:', error);
+                allQuotes = [
+                    {
+                        "id": 0,
+                        "text": "يرجى تشغيل المشروع عبر إضافة (Live Server) في VS Code لتفعيل جلب العبارات من ملف JSON الخارجي بنجاح.",
+                        "author": "نظام راواند المطور",
+                        "source": "منظومة التجربة البرمجية"
+                    }
+                ];
+                generateQuote();
+            });
+
+        function generateQuote() {
+            if (allQuotes.length === 0) return;
+            
+            const randIndex = Math.floor(Math.random() * allQuotes.length);
+            const quote = allQuotes[randIndex];
+            
+            const quoteDisplay = document.getElementById('quote-display');
+            const quoteAuthor = document.getElementById('quote-author');
+            const quoteSource = document.getElementById('quote-source');
+            
+            quoteDisplay.style.opacity = 0;
+            quoteAuthor.style.opacity = 0;
+            quoteSource.style.opacity = 0;
+            
+            setTimeout(() => {
+                quoteDisplay.innerText = `"${quote.text}"`;
+                quoteAuthor.innerText = quote.author ? `✍️ ${quote.author}` : '';
+                quoteSource.innerText = quote.source ? `📖 ${quote.source}` : '';
+                
+                quoteDisplay.style.opacity = 1;
+                if(quote.author) quoteAuthor.style.opacity = 1;
+                if(quote.source) quoteSource.style.opacity = 0.7;
+            }, 300);
+        }
+    </script>
+</body>
+</html>
