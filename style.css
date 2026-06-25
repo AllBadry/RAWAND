@@ -820,49 +820,41 @@ footer {
 }
 
 /* 2. الأوامر الخاصة بشاشات الهواتف فقط (أصغر من 768 بكسل) */
+/* عند عرض الموقع على الهاتف (شاشة أصغر من 768 بكسل) */
 @media (max-width: 768px) {
-    
-    /* --- تنسيق الهيدر وزر القائمة --- */
     header {
-        flex-direction: row !important; /* تثبيت اللوجو وزر القائمة بجانب بعضهما */
+        flex-direction: row !important; /* تثبيت اللوجو والزر أفقياً */
         justify-content: space-between;
+        align-items: center;
         padding: 15px 6%;
     }
 
     .menu-toggle {
-        display: block; /* إظهار زر الخطوط */
+        display: block; /* 🔥 إظهار زر الخطوط الآن على الهاتف */
     }
 
-    /* تحويل قائمة التنقل إلى لوحة زجاجية منسدلة أنيقة */
+    /* تحويل القائمة العادية إلى لوحة منسدلة زجاجية فخمة */
     header nav {
         position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
+        top: 100%; left: 0; width: 100%;
         background: linear-gradient(135deg, rgba(21, 0, 6, 0.98), rgba(46, 1, 16, 0.98));
         border-bottom: 2px solid var(--gold-dark);
         backdrop-filter: blur(10px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-        max-height: 0;
+        max-height: 0; /* مخفية مغلقة افتراضياً */
         overflow: hidden;
         transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 1000;
     }
 
-    /* كلاس التفعيل الذي يضيفه الجافا سكربت عند الضغط */
+    /* كلاس التفعيل النشط عند الضغط على الخطوط الثلاثة ليفتح القائمة */
     header nav.active {
-        max-height: 380px; 
+        max-height: 380px; /* تفتح هيدروليكياً بمرونة لأسفل */
     }
 
     header nav ul {
         flex-direction: column;
-        gap: 0;
-        padding: 10px 0;
         text-align: center;
-    }
-
-    header nav ul li {
-        width: 100%;
+        padding: 10px 0;
     }
 
     header nav ul li a {
@@ -871,12 +863,7 @@ footer {
         font-size: 17px;
         border-bottom: 1px solid rgba(243, 207, 122, 0.04);
     }
-
-    header nav ul li a:hover {
-        background: rgba(243, 207, 122, 0.05);
-        color: var(--gold-bright);
-    }
-
+}
     /* --- تكييف قسم الهيرو الرئيسي --- */
     .hero-section {
         height: auto;
