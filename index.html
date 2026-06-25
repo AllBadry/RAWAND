@@ -296,101 +296,69 @@
         </div>
     </footer>
 
-    <script>
-    // 1. سكربت حركة الظهور عند التمرير (القديم)
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
-        });
-    }, { threshold: 0.15 });
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
 
-    document.querySelectorAll('.reveal, .item-reveal').forEach((el) => observer.observe(el));
-
-    // 2. سكربت الأسئلة الشائعة التفاعلي (الجديد)
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', () => {
-            const currentItem = question.parentElement;
-            
-            // إغلاق أي سؤال آخر مفتوح لزيادة الأناقة (العرض المفرد)
-            document.querySelectorAll('.faq-item').forEach(item => {
-                if (item !== currentItem) {
-                    item.classList.remove('active');
+        // 1. سكربت حركة الظهور التدريجي الفاخرة عند التمرير (Scroll Reveal)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 }
             });
-            
-            // فتح أو إغلاق السؤال الحالي
-            currentItem.classList.toggle('active');
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal, .item-reveal').forEach((el) => observer.observe(el));
+
+        // 2. سكربت الأسئلة الشائعة التفاعلي (يشتغل مرة واحدة فقط وبنعومة)
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', (event) => {
+                event.preventDefault();
+                const currentItem = question.parentElement;
+                
+                // إغلاق أي سؤال آخر مفتوح لتركيز عين الطالب على سؤال واحد
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== currentItem) {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                // تبديل حالة السؤال الحالي (فتح / إغلاق)
+                currentItem.classList.toggle('active');
+            });
         });
-    });
-</script>
 
-<script>
-// إجبار المتصفح على قراءة السكربت بعد تحميل كامل عناصر الصفحة لضمان عمل الأزرار
-document.addEventListener('DOMContentLoaded', () => {
+        // 3. سكربت فتح وإغلاق الناف بار المتجاوب للموبايل (Hamburger Menu)
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navMenu = document.getElementById('nav-menu');
+        
+        if (mobileMenu && navMenu) {
+            const toggleIcon = mobileMenu.querySelector('i');
 
-    // 1. سكربت حركة الظهور التدريجي عند التمرير
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
-        });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.reveal, .item-reveal').forEach((el) => observer.observe(el));
-
-    // 2. سكربت الأسئلة الشائعة التفاعلي (الأكورديون)
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', () => {
-            const currentItem = question.parentElement;
-            document.querySelectorAll('.faq-item').forEach(item => {
-                if (item !== currentItem) {
-                    item.classList.remove('active');
+            mobileMenu.addEventListener('click', (event) => {
+                event.stopPropagation();
+                navMenu.classList.toggle('active');
+                
+                if (navMenu.classList.contains('active')) {
+                    if (toggleIcon) toggleIcon.className = "fas fa-times"; // تحويل لعلامة X
+                    mobileMenu.style.transform = "rotate(90deg)";
+                } else {
+                    if (toggleIcon) toggleIcon.className = "fas fa-bars"; // إعادة لـ 3 خطوط
+                    mobileMenu.style.transform = "rotate(0deg)";
                 }
             });
-            currentItem.classList.toggle('active');
-        });
-    });
 
-    // 3. سكربت فتح وإغلاق الناف بار المتجاوب للموبايل (نسخة برمجية محصنة ومضمونة)
-    const mobileMenu = document.getElementById('mobile-menu');
-    const navMenu = document.getElementById('nav-menu');
-    
-    // التحقق الأمن من وجود العناصر في الصفحة لمنع توقف الكود
-    if (mobileMenu && navMenu) {
-        const toggleIcon = mobileMenu.querySelector('i');
-
-        mobileMenu.addEventListener('click', (event) => {
-            event.stopPropagation(); // منع تداخل الضغطات مع الأقسام الخلفية
-            navMenu.classList.toggle('active');
-            
-            // تبديل شكل الأيقونة بأنيميشن مرن
-            if (navMenu.classList.contains('active')) {
-                if (toggleIcon) toggleIcon.className = "fas fa-times"; // تحويل لعلامة X
-                mobileMenu.style.transform = "rotate(90deg)";
-            } else {
-                if (toggleIcon) toggleIcon.className = "fas fa-bars"; // إعادة لـ 3 خطوط
-                mobileMenu.style.transform = "rotate(0deg)";
-            }
-        });
-
-        // إغلاق القائمة المنسدلة تلقائياً عند النقر على أي رابط داخلي لتسهيل التنقل والتصفح
-        document.querySelectorAll('#nav-menu ul li a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                if (toggleIcon) toggleIcon.className = "fas fa-bars";
-                mobileMenu.style.transform = "rotate(0deg)";
+            // إغلاق المنيو تلقائياً عند الضغط على أي رابط للانتقال السلس
+            document.querySelectorAll('#nav-menu ul li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    if (toggleIcon) toggleIcon.className = "fas fa-bars";
+                    mobileMenu.style.transform = "rotate(0deg)";
+                });
             });
-        });
-    } else {
-        // رسالة تظهر في الـ Console بالمتصفح للمطور في حال وجود خطأ في الـ IDs
-        console.error("تنبيه برمي: لم يتم العثور على المعرفات! تأكد من كتابة id='mobile-menu' و id='nav-menu' بدقة في الـ HTML.");
-    }
-});
-</script>
+        }
+    });
+    </script>
 </body>
 </html>
