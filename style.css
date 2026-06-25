@@ -805,6 +805,7 @@ footer {
    ========================================================================= */
 
 /* 1. التخصيص الأساسي لزر القائمة المخططة (مخفي افتراضياً على الشاشات الكبيرة) */
+/* 1. التخصيص الأساسي لزر القائمة المخططة (مخفي افتراضياً على الشاشات الكبيرة) */
 .menu-toggle {
     display: none;
     font-size: 26px;
@@ -820,7 +821,6 @@ footer {
 }
 
 /* 2. الأوامر الخاصة بشاشات الهواتف فقط (أصغر من 768 بكسل) */
-/* عند عرض الموقع على الهاتف (شاشة أصغر من 768 بكسل) */
 @media (max-width: 768px) {
     header {
         flex-direction: row !important; /* تثبيت اللوجو والزر أفقياً */
@@ -830,7 +830,7 @@ footer {
     }
 
     .menu-toggle {
-        display: block; /* 🔥 إظهار زر الخطوط الآن على الهاتف */
+        display: block; /* إظهار زر الخطوط الآن على الهاتف */
     }
 
     /* تحويل القائمة العادية إلى لوحة منسدلة زجاجية فخمة */
@@ -855,6 +855,7 @@ footer {
         flex-direction: column;
         text-align: center;
         padding: 10px 0;
+        gap: 0;
     }
 
     header nav ul li a {
@@ -863,8 +864,8 @@ footer {
         font-size: 17px;
         border-bottom: 1px solid rgba(243, 207, 122, 0.04);
     }
-}
-    /* --- تكييف قسم الهيرو الرئيسي --- */
+    
+    /* --- تكييف قسم الهيرو الرئيسي للموبايل --- */
     .hero-section {
         height: auto;
         padding: 60px 4%;
@@ -876,11 +877,11 @@ footer {
     .hero-buttons { flex-direction: column; align-items: center; gap: 15px; }
     .btn-gold, .btn-whatsapp { width: 100%; max-width: 280px; }
     
-    /* تكييف لوحة الإحصائيات الزجاجية */
+    /* تكييف لوحة الإحصائيات الزجاجية للموبايل */
     .hero-stats-panel { flex-direction: column; gap: 20px; padding: 25px; }
     .stat-divider { width: 60px; height: 1px; background: linear-gradient(to right, transparent, rgba(243, 207, 122, 0.3), transparent); }
 
-    /* --- تكييف بقية أقسام الموقع --- */
+    /* --- تكييف بقية أقسام الموقع للموبايل --- */
     .about-section {
         background-attachment: scroll; /* إلغاء البارالاكس لضمان السلاسة على الهواتف */
     }
